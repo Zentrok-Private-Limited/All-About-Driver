@@ -1,14 +1,13 @@
 'use client';
 
-import React, { useState } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   BookOpen, Calendar, Clock, User, ArrowUpRight, 
-  Search, SlidersHorizontal, Mail, ArrowRight, Layers3 
+  Search, Mail, ArrowRight, Layers3 
 } from 'lucide-react';
-import { a } from 'framer-motion/client';
 
-// BLOG DATA 
+
 const featuredPost = {
   title: "What Are Device Drivers and Why Are They Important",
   desc: "Explore how drivers act as essential translators between your operating system and hardware, and why they are critical for system stability.",
@@ -343,7 +342,6 @@ export default function BlogPage() {
           </div>
         </div>
       </section>
-
     </div>
   );
 }

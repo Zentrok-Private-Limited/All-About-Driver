@@ -33,6 +33,7 @@ import Image from "next/image";
 import { Sparkles, Shield, Layers } from "lucide-react";
 import Services from "@/components/Services";
 import ServicesTwo from "@/components/ServicesTwo";
+import { article } from "framer-motion/client";
 
 type Slide = {
   id: number;
@@ -649,14 +650,14 @@ const HomePage = () => {
             </h2>
           </div>
 
-          {/* High contrast, clean dynamic button */}
-          <button className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-slate-900 text-white font-medium text-sm hover:bg-[#1464D8] shadow-sm transition-all duration-300 active:scale-95 group">
+          
+          <a href="/Blogs" className="inline-flex items-center gap-2 px-6 py-3 rounded-full bg-slate-900 text-white font-medium text-sm hover:bg-[#1464D8] shadow-sm transition-all duration-300 active:scale-95 group">
             View All Blogs
             <ArrowRight
               size={16}
               className="group-hover:translate-x-1 transition-transform"
             />
-          </button>
+          </a>
         </div>
 
         {/* Blog Posts Card Array Layout */}
@@ -666,16 +667,19 @@ const HomePage = () => {
               title: "What Are Device Drivers and Why Are They Important",
               desc: "Explore how drivers act as essential translators between your operating system and hardware.",
               img: "https://images.unsplash.com/photo-1581092921461-eab62e97a780?q=80&w=800&auto=format&fit=crop",
+              article: "/Blogs/DeviceDriverImportance",
             },
             {
               title: "Common Signs Your Device May Have a Driver Issue",
               desc: "Identify the critical warnings and error systems that signal hardware layer translation conflicts.",
               img: "https://images.unsplash.com/photo-1600132806370-bf17e65e942f?q=80&w=800&auto=format&fit=crop",
+              article: "/Blogs/CommonDriverIssues",
             },
             {
               title: "Understanding Printer Driver Communication",
               desc: "A structural deep dive exploring how spooling instructions interact with local system accessories.",
               img: "https://images.unsplash.com/photo-1612815154858-60aa4c59eaa6?q=80&w=800&auto=format&fit=crop",
+              article: "/Blogs/UnderstandingPrinterDrivers",
             },
           ].map((post, idx) => (
             <motion.article
@@ -704,13 +708,13 @@ const HomePage = () => {
                 </p>
 
                 {/* Text Action element */}
-                <div className="inline-flex items-center gap-1.5 text-xs font-bold tracking-wider text-[#1464D8] pt-2">
+                <a href={post.article} className="inline-flex items-center gap-1.5 text-xs font-bold tracking-wider text-[#1464D8] pt-2">
                   READ MORE
                   <ArrowRight
                     size={14}
                     className="group-hover:translate-x-1 transition-transform"
                   />
-                </div>
+                </a>
               </div>
             </motion.article>
           ))}
@@ -771,16 +775,16 @@ const HomePage = () => {
             {/* Interactive Button Configuration Setup */}
             <div className="pt-6 flex flex-col sm:flex-row items-center justify-center gap-4">
               {/* Primary Action Button */}
-              <button className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white text-slate-950 font-semibold text-sm hover:bg-blue-50 transition-all duration-300 shadow-lg active:scale-98">
+              <a href="/ContactUs" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white text-slate-950 font-semibold text-sm hover:bg-blue-50 transition-all duration-300 shadow-lg active:scale-98">
                 Contact Us
                 <Mail size={16} className="text-slate-700" />
-              </button>
+              </a>
 
               {/* Secondary Action Button */}
-              <button className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white/5 border border-white/10 text-white font-medium text-sm hover:bg-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur-sm active:scale-98">
+              <a href="/Blogs" className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full bg-white/5 border border-white/10 text-white font-medium text-sm hover:bg-white/10 hover:border-white/20 transition-all duration-300 backdrop-blur-sm active:scale-98">
                 Explore More Articles
                 <ArrowUpRight size={16} className="text-slate-400" />
-              </button>
+              </a>
             </div>
           </div>
         </motion.div>

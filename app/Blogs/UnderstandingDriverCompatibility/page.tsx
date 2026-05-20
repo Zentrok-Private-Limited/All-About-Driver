@@ -1,9 +1,8 @@
 'use client';
 
-import React from 'react';
 import { motion } from 'framer-motion';
 import { 
-  Calendar, Clock, ArrowRight, Terminal, Layers, Cpu, HelpCircle, CheckCircle2
+  Calendar, Clock, ArrowRight, Terminal, Layers, Cpu, CheckCircle2
 } from 'lucide-react';
 import { FaFacebook } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
@@ -65,9 +64,6 @@ export default function DriverCompatibilityArticlePage() {
     <div className="w-full bg-white text-slate-700 min-h-screen font-sans selection:bg-blue-500 selection:text-white relative">
       <TechGridOverlay />
 
-      {/* =========================================================================
-          ARTICLE HEADER AREA
-         ========================================================================= */}
       <header className="relative pt-32 pb-12 px-6 max-w-4xl mx-auto text-center space-y-6">
         <div className="absolute top-0 left-1/2 -translate-x-1/2 w-125 h-100 bg-blue-50/50 rounded-full blur-[120px] -z-10 pointer-events-none" />
 
@@ -92,7 +88,7 @@ export default function DriverCompatibilityArticlePage() {
           {articleContent.title}
         </motion.h1>
 
-        {/* Author Metadata Info */}
+        
         <motion.div 
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -251,7 +247,7 @@ export default function DriverCompatibilityArticlePage() {
         <div className="px-6 max-w-7xl mx-auto space-y-12">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-semibold text-slate-900 tracking-tight">Continue Reading</h2>
-            <a href="blog.php" className="text-sm font-bold text-[#1464D8] hover:underline inline-flex items-center gap-1">
+            <a href="/Blogs" className="text-sm font-bold text-[#1464D8] hover:underline inline-flex items-center gap-1">
               View All Posts <ArrowRight size={14} />
             </a>
           </div>
@@ -290,7 +286,6 @@ export default function DriverCompatibilityArticlePage() {
           </div>
         </div>
       </footer>
-
     </div>
   );
 }

@@ -1,19 +1,14 @@
 'use client';
 
-import React from 'react';
 import { motion } from 'framer-motion';
 import { 
-  Calendar, User, Clock, ArrowRight, Share2, 
-  Bookmark, Terminal, CheckCircle 
+  Calendar, Clock, ArrowRight, Terminal,
 } from 'lucide-react';
 import { FaFacebook } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import { FaXTwitter } from "react-icons/fa6";
 
 
-// =========================================================================
-// DATA CONFIGURATIONS (Exact Copy Content from Source)
-// =========================================================================
 const articleContent = {
   meta: {
     category: "Basics",

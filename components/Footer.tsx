@@ -23,10 +23,10 @@ function Footer() {
           <div className="md:col-span-2 space-y-4">
             <h4 className="text-sm font-bold text-white uppercase tracking-wider">Policies</h4>
             <ul className="space-y-2 text-sm font-light">
-              <li><a href="#" className="hover:text-white transition-colors">Privacy Policy</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Terms of Service</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Cookie Policy</a></li>
-              <li><a href="#" className="hover:text-white transition-colors">Disclaimer</a></li>
+              <li><a href="PrivacyPolicy" className="hover:text-white transition-colors">Privacy Policy</a></li>
+              <li><a href="TermsofService" className="hover:text-white transition-colors">Terms of Service</a></li>
+              <li><a href="Cookies" className="hover:text-white transition-colors">Cookie Policy</a></li>
+              <li><a href="Disclaimer" className="hover:text-white transition-colors">Disclaimer</a></li>
             </ul>
           </div>
           <div className="md:col-span-4 space-y-4">

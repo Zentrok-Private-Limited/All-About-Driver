@@ -1,9 +1,8 @@
 'use client';
 
-import React from 'react';
 import { motion } from 'framer-motion';
 import { 
-  Calendar, Clock, ArrowRight,  Terminal, Printer, Wifi, AlertCircle, Cpu
+  Calendar, Clock, ArrowRight, Printer, Wifi, AlertCircle,
 } from 'lucide-react';
 import { FaFacebook } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
@@ -218,7 +217,7 @@ export default function PrinterDriversArticlePage() {
         <div className="px-6 max-w-7xl mx-auto space-y-12">
           <div className="flex items-center justify-between">
             <h2 className="text-2xl font-semibold text-slate-900 tracking-tight">Continue Reading</h2>
-            <a href="blog.php" className="text-sm font-bold text-[#1464D8] hover:underline inline-flex items-center gap-1">
+            <a href="/Blogs" className="text-sm font-bold text-[#1464D8] hover:underline inline-flex items-center gap-1">
               View All Posts <ArrowRight size={14} />
             </a>
           </div>

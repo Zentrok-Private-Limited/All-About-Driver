@@ -136,18 +136,6 @@ export default function ContactPage() {
                   </p>
                 </div>
               </div>
-
-             
-              {/* <div className="p-5 bg-linear-to-br from-slate-900 to-indigo-950 text-white rounded-2xl shadow-lg relative overflow-hidden">
-                <div className="absolute top-0 right-0 w-32 h-32 bg-blue-500/10 rounded-full blur-xl pointer-events-none" />
-                <div className="flex gap-3 items-start relative z-10">
-                  <ShieldCheck size={18} className="text-cyan-400 shrink-0 mt-0.5" />
-                  <p className="text-xs font-light text-slate-300 leading-relaxed">
-                    <strong className="text-white font-medium">Informational Purpose Only:</strong> We offer structural education on system architecture. No executable binaries, firmware installation packages, or direct drivers are distributed here.
-                  </p>
-                </div>
-              </div> */}
-
             </div>
           </div>
 
@@ -266,7 +254,7 @@ export default function ContactPage() {
           </div>
 
           <a 
-            href="blog.php"
+            href="/Blogs"
             className="group px-6 py-3 rounded-xl bg-white border border-slate-300 text-sm font-semibold text-slate-800 hover:border-[#1464D8] hover:text-[#1464D8] inline-flex items-center gap-2 shadow-xs transition-all shrink-0"
           >
             Read Our Blog 
