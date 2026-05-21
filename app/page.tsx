@@ -1,39 +1,24 @@
 "use client";
-import React, { useState, useEffect } from "react";
+import { useState, useEffect } from "react";
 import {
   Monitor,
   Cpu,
-  RefreshCw,
   HelpCircle,
   ArrowRight,
   Printer,
-  Speaker,
   Wifi,
 } from "lucide-react";
-import { ChevronLeft, ChevronRight } from "lucide-react";
-import { motion, AnimatePresence } from "framer-motion";
+import { motion } from "framer-motion";
 import {
-  ShieldCheck,
   Mail,
   Volume2,
-  Tv,
-  Home,
-  Camera,
-  Watch,
-  Lock,
-  MessageSquare,
-  Users,
-  Headset,
-  Banknote,
   Quote,
 } from "lucide-react";
 import { CheckCircle2, BookOpen, Bell, ShieldAlert } from "lucide-react";
 import { AlertTriangle, ArrowUpRight } from "lucide-react";
-import Image from "next/image";
 import { Sparkles, Shield, Layers } from "lucide-react";
 import Services from "@/components/Services";
 import ServicesTwo from "@/components/ServicesTwo";
-import { article } from "framer-motion/client";
 
 type Slide = {
   id: number;
@@ -102,10 +87,10 @@ const HomePage = () => {
   return (
     <main className="min-h-screen bg-slate-50 ">
       {/* Hero Section */}
-      <div className="relative w-full mx-auto overflow-hidden mt-10">
+      <div className="relative w-full overflow-hidden">
         {/* Slides */}
         <div
-          className="flex transition-transform duration-700 ease-in-out"
+          className="flex transition-transform duration-700 ease-in-out border"
           style={{
             transform: `translateX(-${currentIndex * 100}%)`,
           }}
@@ -115,48 +100,9 @@ const HomePage = () => {
               <img
                 src={slide.image}
                 alt={`Slide ${slide.id}`}
-                className="w-full h-55 md:h-125 object-contain"
+                className="w-full h-40 md:h-145 object-containmd:object-cover"
               />
             </div>
-          ))}
-        </div>
-
-        {/* Left Arrow */}
-        <button
-          onClick={prevSlide}
-          className="
-          absolute left-0 top-1/2 -translate-y-1/2 text-black
-          w-12 h-12 rounded-full
-          flex items-center justify-center
-          transition
-        "
-        >
-          ❮
-        </button>
-
-        {/* Right Arrow */}
-        <button
-          onClick={nextSlide}
-          className="
-          absolute right-0 top-1/2 -translate-y-1/2 text-black
-          w-12 h-12 rounded-full
-          flex items-center justify-center
-          transition
-        "
-        >
-          ❯
-        </button>
-
-        {/* Dots */}
-        <div className="absolute bottom-5 left-1/2 -translate-x-1/2 flex gap-3">
-          {slides.map((_, index) => (
-            <button
-              key={index}
-              onClick={() => setCurrentIndex(index)}
-              className={`w-3 h-3 rounded-full transition-all ${
-                currentIndex === index ? "bg-white scale-125" : "bg-white/50"
-              }`}
-            />
           ))}
         </div>
       </div>

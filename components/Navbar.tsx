@@ -44,7 +44,7 @@ export default function Navbar() {
           {/* Logo */}
           <Link href="/" className="flex items-center">
             <h1 className="text-lg md:text-2xl font-light tracking-tight text-white uppercase leading-none">
-              All About Drivers
+              All About Driver
             </h1>
           </Link>
 
