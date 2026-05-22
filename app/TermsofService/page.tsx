@@ -22,8 +22,8 @@ const termsConfig = {
   url: "http://allaboutdriver.com/",
   corporateAddress: {
     name: "All About Driver",
-    building: "Room 123, XYZ",
-    footerUSAddress: "Anywhere, USA",
+    building: "30 N GOULD ST STER,",
+    Address: "SHERIDAN WY, 82801",
   },
 };
 
@@ -518,16 +518,19 @@ export default function TermsOfServicePage() {
               or by post at:
             </p>
             <div className="p-6 rounded-2xl bg-blue-50/50 border border-blue-100/40 text-sm space-y-1 font-normal text-slate-800 font-mono">
-              <p className="font-bold text-slate-900 mb-2 flex items-center gap-1.5 text-xs tracking-wide uppercase">
-                <MapPin size={14} className="text-[#1464D8]" /> Corporate
-                Operations Node
-              </p>
-              <p>{termsConfig.corporateAddress.name}</p>
-              <p>{termsConfig.corporateAddress.building}</p>
-              <p className="pt-2 text-xs text-slate-400 font-sans font-light">
-                Email Support: {termsConfig.email}
-              </p>
-            </div>
+                          <p className="font-bold text-slate-900 mb-2 flex items-center gap-1.5 text-xs tracking-wide uppercase">
+                            <MapPin size={14} className="text-[#1464D8]" /> Registered Mailing Address 
+                          </p>
+                          <p>{termsConfig.corporateAddress.name}</p>
+                          <p>{termsConfig.corporateAddress.building}</p>
+                          <p>{termsConfig.corporateAddress.Address}</p>
+                          <p className="pt-2 text-sm text-slate-800 font-sans font-light">
+                            Email Support: {termsConfig.email}
+                          </p>
+                          <p className="pt-4 text-base text-slate-800 font-sans font-bold">
+                            Brand owned by <a className="text-[#1464D8] hover:underline" href="https://www.printerservicellc.com">printerservicellc.com</a>
+                          </p>
+                        </div>
           </section>
         </article>
       </main>

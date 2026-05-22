@@ -23,8 +23,8 @@ const cookieConfig = {
   url: "http://allaboutdriver.com/",
   corporateAddress: {
     name: "All About Driver",
-    building: "Room 123, XYZ",
-    footerUSAddress: "Anywhere, USA",
+    building: "30 N GOULD ST STER,",
+    Address: "SHERIDAN WY, 82801",
   },
 };
 
@@ -163,14 +163,14 @@ export default function CookiePolicyPage() {
               (the “<strong className="font-semibold">Website</strong>”). This
               policy should be read together with our{" "}
               <a
-                href="privacy-policy.php"
+                href="/PrivacyPolicy"
                 className="text-[#1464D8] font-normal hover:underline"
               >
                 PRIVACY POLICY
               </a>{" "}
               and{" "}
               <a
-                href="terms-of-service.php"
+                href="/TermsofService"
                 className="text-[#1464D8] font-normal hover:underline"
               >
                 TERMS OF SERVICE
@@ -230,7 +230,7 @@ export default function CookiePolicyPage() {
               browser type, device information, and browsing behavior, as
               described in our{" "}
               <a
-                href="privacy-policy.php"
+                href="/PrivacyPolicy"
                 className="text-[#1464D8] font-normal hover:underline"
               >
                 PRIVACY POLICY
@@ -291,7 +291,7 @@ export default function CookiePolicyPage() {
                 measure campaign effectiveness, subject to applicable laws and
                 user consent where required{" "}
                 <a
-                  href="privacy-policy.php"
+                  href="/PrivacyPolicy"
                   className="text-[#1464D8] font-normal hover:underline"
                 >
                   PRIVACY POLICY
@@ -317,7 +317,7 @@ export default function CookiePolicyPage() {
               Google’s Privacy & Terms page or opt out using Google’s opt-out
               tools, as referenced in our{" "}
               <a
-                href="privacy-policy.php"
+                href="/PrivacyPolicy"
                 className="text-[#1464D8] font-normal hover:underline"
               >
                 PRIVACY POLICY
@@ -358,7 +358,7 @@ export default function CookiePolicyPage() {
               and {cookieConfig.companyName} does not currently respond to such
               signals{" "}
               <a
-                href="privacy-policy.php"
+                href="/PrivacyPolicy"
                 className="text-[#1464D8] font-normal hover:underline"
               >
                 PRIVACY POLICY
@@ -391,13 +391,16 @@ export default function CookiePolicyPage() {
             </p>
             <div className="p-6 rounded-2xl bg-blue-50/50 border border-blue-100/40 text-sm space-y-1 font-normal text-slate-800 font-mono">
               <p className="font-bold text-slate-900 mb-2 flex items-center gap-1.5 text-xs tracking-wide uppercase">
-                <MapPin size={14} className="text-[#1464D8]" /> Compliance
-                Registry Node
+                <MapPin size={14} className="text-[#1464D8]" /> Registered Mailing Address 
               </p>
               <p>{cookieConfig.corporateAddress.name}</p>
               <p>{cookieConfig.corporateAddress.building}</p>
-              <p className="pt-2 text-xs text-slate-400 font-sans font-light">
+              <p>{cookieConfig.corporateAddress.Address}</p>
+              <p className="pt-2 text-sm text-slate-800 font-sans font-light">
                 Email Support: {cookieConfig.email}
+              </p>
+              <p className="pt-4 text-base text-slate-800 font-sans font-bold">
+                Brand owned by <a className="text-[#1464D8] hover:underline" href="https://www.printerservicellc.com">printerservicellc.com</a>
               </p>
             </div>
           </section>
