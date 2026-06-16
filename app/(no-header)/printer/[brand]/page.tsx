@@ -57,9 +57,9 @@ export default function PrinterBrandPage({ params }: Props) {
     brother: {
       name: "Brother",
       themeBg: "bg-[#0d4aa2]",
-      logo: "/logos/brother-logo.png",
-      heroImage: "/printers/brother-printer.png",
-      modelImage: "/models/brother-model.png",
+      logo: "/brother.png",
+      heroImage: "/brother1.png",
+      modelImage: "/brother2.png",
     },
   };
 
