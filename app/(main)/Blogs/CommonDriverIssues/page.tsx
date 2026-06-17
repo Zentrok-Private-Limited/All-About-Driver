@@ -22,7 +22,7 @@ const articleContent = {
   author: {
     name: "Nikhil Varma",
     role: "Hardware Specialist",
-    organization: "Mad About Drivers",
+    organization: "All About Driver",
     avatar: "https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?q=80&w=150&auto=format&fit=crop"
   },
   media: {

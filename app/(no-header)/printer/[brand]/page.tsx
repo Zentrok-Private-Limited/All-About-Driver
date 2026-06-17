@@ -20,6 +20,7 @@ type WizardStep =
   | "CHECKING_DRIVERS"
   | "CHECKING_FILES"
   | "LOADING_ERROR"
+  | "SHOWING_INSTRUCTIONS"
   | "WIFI_FAILED"
   | "DETECTING_PROBLEMS"
   | "ISSUES_FOUND";
@@ -31,6 +32,11 @@ export default function PrinterBrandPage({ params }: Props) {
   const [modelNumber, setModelNumber] = useState("");
   const [wizardStep, setWizardStep] = useState<WizardStep>("CLOSED");
   const [progressWidth, setProgressWidth] = useState(0);
+  const [showFirstInstruction, setShowFirstInstruction] = useState(false);
+  const [showSecondInstruction, setShowSecondInstruction] = useState(false);
+  const [connectionType, setConnectionType] = useState<"usb" | "wifi" | null>(
+    null,
+  );
 
   const brandData = {
     hp: {
@@ -67,7 +73,6 @@ export default function PrinterBrandPage({ params }: Props) {
 
   // Automated step loop sequence engine
   useEffect(() => {
-    // Automatically transition from the initialization loader to connection screen
     if (wizardStep === "INITIALIZING_SETUP") {
       const timer = setTimeout(() => setWizardStep("SELECT_CONNECTION"), 2000);
       return () => clearTimeout(timer);
@@ -89,8 +94,37 @@ export default function PrinterBrandPage({ params }: Props) {
       return () => clearTimeout(timer);
     }
     if (wizardStep === "LOADING_ERROR") {
-      const timer = setTimeout(() => setWizardStep("WIFI_FAILED"), 1500);
+      const timer = setTimeout(
+        () => setWizardStep("SHOWING_INSTRUCTIONS"),
+        1500,
+      );
       return () => clearTimeout(timer);
+    }
+
+    if (wizardStep === "SHOWING_INSTRUCTIONS") {
+      // 1. Delay before showing the first paragraph
+      const firstMessageTimer = setTimeout(() => {
+        setShowFirstInstruction(true);
+      }, 800);
+
+      // 2. Delay before showing the second paragraph
+      const secondMessageTimer = setTimeout(() => {
+        setShowSecondInstruction(true);
+      }, 2300);
+
+      // 3. Total screen time before moving to failure panel layout
+      const screenTransitionTimer = setTimeout(() => {
+        setWizardStep("WIFI_FAILED");
+        // Reset animations
+        setShowFirstInstruction(false);
+        setShowSecondInstruction(false);
+      }, 5500);
+
+      return () => {
+        clearTimeout(firstMessageTimer);
+        clearTimeout(secondMessageTimer);
+        clearTimeout(screenTransitionTimer);
+      };
     }
   }, [wizardStep]);
 
@@ -98,16 +132,20 @@ export default function PrinterBrandPage({ params }: Props) {
   useEffect(() => {
     if (wizardStep === "DETECTING_PROBLEMS") {
       setProgressWidth(0);
+
       const interval = setInterval(() => {
         setProgressWidth((old) => {
           if (old >= 100) {
             clearInterval(interval);
-            setTimeout(() => setWizardStep("ISSUES_FOUND"), 400);
+            // Gives a 1-second pause at 100% before moving forward
+            setTimeout(() => setWizardStep("ISSUES_FOUND"), 1000);
             return 100;
           }
-          return old + 10;
+          // Increments by 4% every 600ms (~15 seconds total run time)
+          return old + 4;
         });
-      }, 250);
+      }, 600);
+
       return () => clearInterval(interval);
     }
   }, [wizardStep]);
@@ -165,10 +203,10 @@ export default function PrinterBrandPage({ params }: Props) {
 
       {/* DYNAMIC BRAND HERO SECTION */}
       <section className={`${data.themeBg} transition-colors duration-300`}>
-        <div className="mx-auto max-w-6xl px-6 py-14 lg:py-20">
+        <div className="mx-auto max-w-6xl px-6 py-5 lg:py-10">
           <div className="grid items-center gap-12 lg:grid-cols-12">
             <div className="space-y-6 lg:col-span-7">
-              <h1 className="text-4xl font-extrabold tracking-tight text-white sm:text-5xl">
+              <h1 className="text-3xl font-extrabold tracking-tight text-white sm:text-5xl">
                 Download Free {data.name} Printer Drivers
               </h1>
               <ul className="space-y-2 text-sm font-medium text-white/90">
@@ -180,7 +218,7 @@ export default function PrinterBrandPage({ params }: Props) {
                   type="button"
                   onClick={() => setWizardStep("GET_STARTED")}
                   disabled={isButtonDisabled}
-                  className="rounded-full bg-blue-600 px-7 py-3 text-xs font-bold tracking-wide text-white shadow-lg transition hover:bg-blue-700"
+                  className="rounded-full bg-blue-600 px-7 py-3 text-sm font-bold tracking-wide text-white shadow-lg transition hover:bg-blue-700"
                 >
                   Download Now ↓
                 </button>
@@ -209,12 +247,12 @@ export default function PrinterBrandPage({ params }: Props) {
               <h2 className="text-2xl font-extrabold text-slate-900">
                 Quick Download Free Drivers
               </h2>
-              <p className="text-xs text-gray-500">
+              <p className="text-sm text-gray-500">
                 Fill the form and download your {data.name} printer driver
               </p>
 
               <div className="space-y-2">
-                <label className="block text-xs font-bold uppercase tracking-wider text-slate-700">
+                <label className="block text-sm font-bold uppercase tracking-wider text-slate-700">
                   Model Number:
                 </label>
                 <input
@@ -231,7 +269,7 @@ export default function PrinterBrandPage({ params }: Props) {
                   type="button"
                   onClick={() => setWizardStep("GET_STARTED")}
                   disabled={isButtonDisabled}
-                  className="rounded-md bg-[#256BE7] px-8 py-3.5 text-xs font-bold text-white transition disabled:opacity-60 disabled:cursor-not-allowed shadow-md"
+                  className="rounded-md bg-[#256BE7] px-8 py-3.5 text-sm font-bold text-white transition disabled:opacity-60 disabled:cursor-not-allowed shadow-md"
                 >
                   Download Driver
                 </button>
@@ -242,7 +280,7 @@ export default function PrinterBrandPage({ params }: Props) {
               <h3 className="text-xl font-extrabold text-slate-900">
                 How to find printer model number?
               </h3>
-              <p className="text-xs text-gray-400">
+              <p className="text-sm text-gray-400">
                 The product name is on the front of your device.
               </p>
               <div className="flex justify-center pt-4">
@@ -280,11 +318,11 @@ export default function PrinterBrandPage({ params }: Props) {
               <div className="text-center space-y-6 py-4">
                 <button
                   onClick={() => setWizardStep("CONFIRM_MODEL")}
-                  className="bg-[#256BE7] text-white font-semibold text-xs px-6 py-3 rounded-md transition"
+                  className="bg-[#256BE7] text-white font-semibold text-sm px-6 py-3 rounded-md transition"
                 >
                   Let's Start →
                 </button>
-                <p className="text-xs text-gray-500 font-medium">
+                <p className="text-sm text-gray-500 font-medium">
                   Start Printer Setup Wizard
                 </p>
                 <div className="flex justify-center pt-2">
@@ -296,11 +334,11 @@ export default function PrinterBrandPage({ params }: Props) {
             {/* STEP 2: CONFIRM DESIGNATED INPUT VALUE */}
             {wizardStep === "CONFIRM_MODEL" && (
               <div className="space-y-5 py-2">
-                <p className="text-xs font-semibold text-gray-600">
+                <p className="text-sm font-semibold text-gray-600">
                   Fill the form and download your printer driver
                 </p>
                 <div className="space-y-2">
-                  <label className="block text-xs font-bold text-gray-700 uppercase">
+                  <label className="block text-sm font-bold text-gray-700 uppercase">
                     Model Number
                   </label>
                   <input
@@ -312,7 +350,7 @@ export default function PrinterBrandPage({ params }: Props) {
                 </div>
                 <button
                   onClick={() => setWizardStep("INITIALIZING_SETUP")} // Updates state trigger point
-                  className="w-full bg-[#256BE7] text-white text-xs font-bold py-3.5 rounded-md transition shadow-sm"
+                  className="w-full bg-[#256BE7] text-white text-sm font-bold py-3.5 rounded-md transition shadow-sm"
                 >
                   Quick Download & Install Drivers ↓
                 </button>
@@ -332,34 +370,68 @@ export default function PrinterBrandPage({ params }: Props) {
 
             {/* STEP 3: CONNECTION TYPING CHOICE */}
             {wizardStep === "SELECT_CONNECTION" && (
-              <div className="text-center space-y-6 py-2">
+              <div className="text-center space-y-6 py-2 w-full max-w-md mx-auto">
                 <h4 className="text-sm font-bold text-gray-700">
                   Select Wi-Fi or USB connection
                 </h4>
 
-                <div className="grid grid-cols-2 gap-8 pt-2">
-                  <div className="flex flex-col items-center space-y-4 p-4 rounded-xl border border-gray-50 bg-gray-50/50">
-                    <img src="/usb.jpg" alt="usb" />
-                    <p className="text-xs font-medium text-gray-600">
-                      <span className="font-bold">USB:</span> Connect via USB
-                    </p>
+                {/* Using items-stretch to make sure both columns match heights perfectly */}
+                <div className="grid grid-cols-2 gap-4 pt-2 items-stretch">
+                  {/* USB Card Option */}
+                  <div className="flex flex-col items-center justify-between p-4 h-full rounded-xl border border-gray-100 bg-gray-50/50">
+                    <div className="flex flex-col items-center space-y-3 w-full">
+                      {/* Constrained images so an uneven image file won't break your columns */}
+                      <div className="h-16 flex items-center justify-center">
+                        <img
+                          src="/usb.jpg"
+                          alt="usb"
+                          className="max-h-full object-contain"
+                        />
+                      </div>
+                      {/* min-h aligns text zones cleanly */}
+                      <div className="min-h-10 flex items-center justify-center text-center">
+                        <p className="text-xs font-medium text-gray-600 leading-tight">
+                          <span className="font-bold">USB:</span> Connect via
+                          USB
+                        </p>
+                      </div>
+                    </div>
                     <button
-                      onClick={() => setWizardStep("SEARCHING_PORTS")}
-                      className="bg-[#256BE7] text-white text-[11px] font-bold px-4 py-2 rounded-md hover:bg-blue-800 transition"
+                      type="button"
+                      onClick={() => {
+                        setConnectionType("usb");
+                        setWizardStep("SEARCHING_PORTS");
+                      }}
+                      className="w-full mt-4 bg-[#256BE7] text-white text-xs font-bold py-2 rounded-md hover:bg-blue-800 transition-colors"
                     >
                       Let's Start →
                     </button>
                   </div>
 
-                  <div className="flex flex-col items-center space-y-4 p-4 rounded-xl border border-gray-50 bg-gray-50/50">
-                    <img src="/wifi.png" alt="wifi" />
-                    <p className="text-xs font-medium text-gray-600">
-                      <span className="font-bold">Wi-Fi:</span> Connect via
-                      Wi-Fi
-                    </p>
+                  {/* Wi-Fi Card Option */}
+                  <div className="flex flex-col items-center justify-between p-4 h-full rounded-xl border border-gray-100 bg-gray-50/50">
+                    <div className="flex flex-col items-center space-y-3 w-full">
+                      <div className="h-16 flex items-center justify-center">
+                        <img
+                          src="/wifi.png"
+                          alt="wifi"
+                          className="max-h-full object-contain"
+                        />
+                      </div>
+                      <div className="min-h-10 flex items-center justify-center text-center">
+                        <p className="text-xs font-medium text-gray-600 leading-tight">
+                          <span className="font-bold">Wi-Fi:</span> Connect via
+                          Wi-Fi
+                        </p>
+                      </div>
+                    </div>
                     <button
-                      onClick={() => setWizardStep("SEARCHING_PORTS")}
-                      className="bg-[#256BE7] text-white text-[11px] font-bold px-4 py-2 rounded-md hover:bg-blue-800 transition"
+                      type="button"
+                      onClick={() => {
+                        setConnectionType("wifi");
+                        setWizardStep("SEARCHING_PORTS");
+                      }}
+                      className="w-full mt-4 bg-[#256BE7] text-white text-xs font-bold py-2 rounded-md hover:bg-blue-800 transition-colors"
                     >
                       Let's Start →
                     </button>
@@ -373,16 +445,41 @@ export default function PrinterBrandPage({ params }: Props) {
               wizardStep === "CHECKING_SPOOLER" ||
               wizardStep === "CHECKING_DRIVERS" ||
               wizardStep === "CHECKING_FILES" ||
-              wizardStep === "LOADING_ERROR") && (
-              <div className="text-center py-8 space-y-6">
-                <p className="text-xs font-medium text-black max-w-xs mx-auto">
-                  Verify your printer's connection channel for a seamless setup
-                  process.
+              wizardStep === "LOADING_ERROR" ||
+              wizardStep === "SHOWING_INSTRUCTIONS") && (
+              <div className="text-center py-4 space-y-5">
+                {/* Dynamic Top Subtitle Statement */}
+                <p className="text-sm font-medium text-gray-500 max-w-xs mx-auto leading-relaxed">
+                  Verify your printer's{" "}
+                  {connectionType === "usb" ? "USB" : "Wi-Fi"} connection for a
+                  seamless setup process.
                 </p>
-                <div className="flex items-center justify-center gap-2.5 text-xs font-semibold text-gray-600">
+
+                {/* Dynamic Graphic Center Block */}
+                <div className="flex justify-center py-2">
+                  {connectionType === "usb" ? (
+                    <img
+                      src="/usb.jpg"
+                      alt="USB connection setup schematic"
+                      className="h-20 object-contain"
+                    />
+                  ) : (
+                    <img
+                      src="/wifi.png"
+                      alt="Wi-Fi connection setup schematic"
+                      className="h-20 object-contain"
+                    />
+                  )}
+                </div>
+
+                {/* Spinner Loader Message Block */}
+                <div className="flex items-center justify-center gap-2.5 text-sm font-semibold text-gray-600">
                   <div className="h-4 w-4 animate-spin rounded-full border-2 border-[#256be7] border-t-transparent" />
                   {wizardStep === "SEARCHING_PORTS" && (
-                    <span>Searching for Ports...</span>
+                    <span>
+                      Searching for {connectionType === "usb" ? "USB" : "Wi-Fi"}{" "}
+                      Ports...
+                    </span>
                   )}
                   {wizardStep === "CHECKING_SPOOLER" && (
                     <span>Checking Printer Spooler...</span>
@@ -393,50 +490,65 @@ export default function PrinterBrandPage({ params }: Props) {
                   {wizardStep === "CHECKING_FILES" && (
                     <span>Checking Installation Files...</span>
                   )}
-                  {wizardStep === "LOADING_ERROR" && (
+                  {(wizardStep === "LOADING_ERROR" ||
+                    wizardStep === "SHOWING_INSTRUCTIONS") && (
                     <span className="text-red-500 font-bold">
                       Loading Error...
                     </span>
                   )}
                 </div>
-                <p className="text-xs font-medium text-gray-500 max-w-xs mx-auto">
-                  1. Check USB cable connected both side
-                </p>
-                <p className="text-xs font-medium text-gray-500 max-w-xs mx-auto">
-                  2. Check your device driver (USB Port Drivers)
-                </p>
+
+                {/* Instructional text that cleanly pops up under the loader afterward */}
+                {wizardStep === "SHOWING_INSTRUCTIONS" && (
+                  <div>
+                    {showFirstInstruction && (
+                      <p className="text-sm font-semibold text-gray-400 max-w-xs mx-auto mt-1">
+                        1. Check USB cable connected both side
+                      </p>
+                    )}
+                    {showSecondInstruction && (
+                      <p className="text-sm font-semibold text-gray-400 max-w-xs mx-auto mt-1">
+                        2. Check your device driver (USB Port Drivers)
+                      </p>
+                    )}
+                  </div>
+                )}
               </div>
             )}
-
             {/* STEP 4: FAILURE FEEDBACK WORKSPACE */}
             {wizardStep === "WIFI_FAILED" && (
-              <div className="text-center py-2 space-y-6">
+              <div className="text-center py-2 space-y-5">
+                {/* Dynamic Graphic Header Image */}
                 <div className="flex justify-center">
-                  <div className="p-3 bg-red-50 rounded-full text-red-500">
-                    <svg
-                      className="w-10 h-10"
-                      fill="none"
-                      stroke="currentColor"
-                      strokeWidth="1.5"
-                      viewBox="0 0 24 24"
-                    >
-                      <path
-                        strokeLinecap="round"
-                        strokeLinejoin="round"
-                        d="M12 9v3.75m-9.303 3.376c-.866 1.5.217 3.374 1.948 3.374h14.71c1.73 0 2.813-1.874 1.948-3.374L13.949 3.378c-.866-1.5-3.032-1.5-3.898 0L2.697 16.126zM12 15.75h.007v.008H12v-.008z"
-                      />
-                    </svg>
-                  </div>
+                  {connectionType === "usb" ? (
+                    <img
+                      src="/usb.jpg"
+                      alt="USB failure"
+                      className="h-20 object-contain"
+                    />
+                  ) : (
+                    <img
+                      src="/wifi.png"
+                      alt="Wi-Fi failure"
+                      className="h-20 object-contain"
+                    />
+                  )}
                 </div>
 
-                <h4 className="text-base font-extrabold text-gray-800">
-                  Connection execution failed.
+                {/* Dynamic Status Title */}
+                <h4 className="text-base font-extrabold text-gray-800 tracking-tight">
+                  {connectionType === "usb"
+                    ? "USB connection failed."
+                    : "Wifi connection failed."}
                 </h4>
 
-                <div className="max-w-xs mx-auto space-y-3 text-xs border-y border-gray-100 py-4 text-left">
+                {/* Conditional Description Text Rows */}
+                <div className="max-w-xs mx-auto space-y-4 text-sm border-y border-gray-100 py-4 text-left">
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-500 font-medium">
-                      Check connection links on both ends.
+                    <span className="text-gray-600 font-medium">
+                      {connectionType === "usb"
+                        ? "Check USB cable on both ends."
+                        : "Check Wifi on both ends."}
                     </span>
                     <button
                       onClick={() => setWizardStep("SEARCHING_PORTS")}
@@ -446,8 +558,10 @@ export default function PrinterBrandPage({ params }: Props) {
                     </button>
                   </div>
                   <div className="flex justify-between items-center">
-                    <span className="text-gray-500 font-medium">
-                      Check hardware configurations.
+                    <span className="text-gray-600 font-medium">
+                      {connectionType === "usb"
+                        ? "Check USB drivers."
+                        : "Check Wifi drivers."}
                     </span>
                     <button
                       onClick={() => setWizardStep("DETECTING_PROBLEMS")}
@@ -458,14 +572,15 @@ export default function PrinterBrandPage({ params }: Props) {
                   </div>
                 </div>
 
+                {/* Standard Utility Lower Controls */}
                 <div className="flex gap-3 justify-center pt-2">
                   <button
                     onClick={() => setWizardStep("DETECTING_PROBLEMS")}
-                    className=" bg-[#256be7] text-white  text-xs font-bold px-6 py-2.5 rounded-md hover:bg-blue-800 transition"
+                    className="bg-[#256be7] text-white text-sm font-bold px-6 py-2.5 rounded-md hover:bg-blue-800 transition"
                   >
                     Fix Issue
                   </button>
-                  <button className="bg-[#256be7] text-white text-xs font-bold px-6 py-2.5 rounded-md hover:bg-blue-800 transition">
+                  <button className="bg-[#256be7] text-white text-sm font-bold px-6 py-2.5 rounded-md hover:bg-blue-800 transition">
                     Need Assistance?
                   </button>
                 </div>
@@ -481,51 +596,58 @@ export default function PrinterBrandPage({ params }: Props) {
 
                 <div className="w-full h-2.5 bg-gray-100 rounded-full overflow-hidden">
                   <div
-                    className="h-full bg-[#256be7] transition-all duration-300 ease-out"
+                    className="h-full bg-[#256be7] transition-all duration-500 ease-out" // Bumped duration up slightly for fluid slow movement
                     style={{ width: `${progressWidth}%` }}
                   />
                 </div>
 
-                <p className="text-xs font-semibold text-gray-500">
-                  {progressWidth < 40 && "Checking the spooler service..."}
-                  {progressWidth >= 40 &&
+                <p className="text-sm font-semibold text-gray-500 min-h-4">
+                  {progressWidth < 25 &&
+                    "Gathering information about your devices..."}
+                  {progressWidth >= 25 &&
+                    progressWidth < 60 &&
+                    "Checking the spooler service..."}
+                  {progressWidth >= 60 &&
                     progressWidth < 80 &&
-                    "Analyzing localized device connectivity nodes..."}
+                    "Checking printer registry files..."}
                   {progressWidth >= 80 &&
-                    progressWidth < 100 &&
-                    "Resolving device routing conflict filters..."}
-                  {progressWidth === 100 &&
-                    "System check complete! Summarizing logs..."}
+                    "Checking network printer connectivity..."}{" "}
+                  {/* Covers 80% through 100% smoothly */}
                 </p>
               </div>
             )}
 
             {/* FINAL ERROR REPORT PANEL */}
             {wizardStep === "ISSUES_FOUND" && (
-              <div className="overflow-hidden w-[470px] mx-auto">
-                <div className="px-8 py-7 text-center">
-                  <div className="flex justify-center mb-5">
+              /* Replaced fixed w-[470px] with responsive sizing, added a strict h-[400px] limit */
+              <div className="overflow-hidden w-full max-w-md h-100 mx-auto flex flex-col justify-center items-center">
+                <div className="w-full h-full text-center">
+                  {/* GRAPHIC ELEMENT BLOCK */}
+                  <div className="flex justify-center mb-4">
                     <div className="relative">
-                      <div className="w-[145px] h-[85px] border border-[#a7b0c5] rounded bg-white flex items-center justify-center">
-                        <div className="relative w-[58px] h-[58px] rounded-full border-[5px] border-red-600">
+                      {/* Replaced fixed dimensions with clean standard utilities */}
+                      <div className="w-41 h-25 border-2 border-gray-400 rounded bg-white flex items-center justify-center">
+                        <div className="relative w-14 h-14 rounded-full border-[5px] border-red-600">
                           <div className="absolute inset-0 flex items-center justify-center text-[11px] font-bold text-red-600">
                             ERROR
                           </div>
-                          <div className="absolute top-1/2 left-1/2 w-[68px] h-[5px] bg-red-600 rotate-45 -translate-x-1/2 -translate-y-1/2" />
+                          <div className="absolute top-1/2 left-1/2 w-16 h-1.25 bg-red-600 rotate-45 -translate-x-1/2 -translate-y-1/2" />
                         </div>
                       </div>
-                      <div className="mx-auto w-12 h-3 bg-[#d8d8d8]" />
-                      <div className="mx-auto w-25 h-5 bg-[#efefef] border border-[#bdbdbd]" />
+                      <div className="mx-auto w-24 h-5 bg-[#efefef] border border-[#bdbdbd]" />
                     </div>
                   </div>
 
-                  <h2 className="text-[22px] font-bold text-[#252944] mb-3">
+                  <h2 className="text-xl md:text-2xl font-bold text-[#252944] mb-2">
                     2 Issues Found
                   </h2>
-                  <div className="w-57.5 h-px bg-[#b7bccb] mx-auto mb-7" />
 
-                  <div className="max-w-[320px] mx-auto text-center text-[14px] text-[#303030] leading-7">
-                    <div className="mb-4">
+                  {/* Standardized width line separator */}
+                  <div className="w-56 h-px bg-[#b7bccb] mx-auto mb-6" />
+
+                  {/* ERROR CONTENT BOX */}
+                  <div className=" mx-auto text-center text-sm md:text-base text-[#303030]  space-y-3">
+                    <div>
                       <p>
                         1. Network Error{" "}
                         <span className="font-bold">0x00000709</span>
@@ -534,8 +656,7 @@ export default function PrinterBrandPage({ params }: Props) {
                     </div>
                     <div>
                       <p>
-                        2. Printer driver installation has been failed due to
-                        error
+                        2. Printer driver installation has failed due to error
                       </p>
                       <p>
                         "<span className="font-bold">C0000022</span>" preventing
@@ -544,13 +665,14 @@ export default function PrinterBrandPage({ params }: Props) {
                     </div>
                   </div>
 
-                  <div className="mt-8">
+                  {/* INTERACTIVE CONTROLS CONTAINER */}
+                  <div className="mt-6">
                     <button
                       type="button"
                       onClick={() =>
                         alert("Connecting to a Live Support agent...")
                       }
-                      className="w-51.25 h-10.5 bg-[#3f73c8] hover:bg-[#2d5fb0] text-white font-semibold text-[15px] rounded-md shadow-md"
+                      className="w-51.25 h-10.5 bg-[#3f73c8] hover:bg-[#2d5fb0] text-white font-semibold text-[15px] rounded-md shadow-md transition-colors"
                     >
                       Live Chat Support
                     </button>

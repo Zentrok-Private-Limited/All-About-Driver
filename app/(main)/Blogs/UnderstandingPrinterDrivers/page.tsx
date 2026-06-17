@@ -20,7 +20,7 @@ const articleContent = {
   author: {
     name: "The Support Team",
     role: "Tech Specialists",
-    organization: "Mad About Drivers",
+    organization: "All About Driver",
     avatar: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?q=80&w=150&auto=format&fit=crop"
   },
   media: {
